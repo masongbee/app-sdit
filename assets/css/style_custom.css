@@ -1,0 +1,9 @@
+#app-header-title {
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#contentPanel-body {
+    background-image: url('../images/square.gif');
+}
