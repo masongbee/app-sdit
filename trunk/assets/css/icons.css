@@ -1,0 +1,27 @@
+.icon-user {
+    background-image: url('../images/icons/user.png') !important;
+}
+
+.icon-teacher {
+    background-image: url('../images/icons/teacher.png') !important;
+}
+
+.icon-group {
+    background-image: url('../images/icons/group.png') !important;
+}
+
+.icon-group-key {
+    background-image: url('../images/icons/group_key.png') !important;
+}
+
+.icon-shutdown {
+    background-image: url('../images/icons/shutdown.png') !important;
+}
+
+.icon-add {
+    background-image: url('../images/icons/add.png') !important;
+}
+
+.icon-remove {
+    background-image: url('../images/icons/delete.png') !important;
+}
