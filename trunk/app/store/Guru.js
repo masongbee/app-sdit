@@ -8,7 +8,7 @@ Ext.define('TRUSTACC.store.Guru', {
     
     storeId		: 'GuruStore',
     
-    pageSize	: 10, // number display per Grid
+    pageSize	: 20, // number display per Grid
     
     proxy: {
         type: 'ajax',

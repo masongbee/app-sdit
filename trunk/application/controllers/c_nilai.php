@@ -1,50 +1,58 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_guru extends CI_Controller {
+class C_nilai extends CI_Controller {
 	
 	function __construct(){
 		parent::__construct();		
-		$this->load->model('m_guru', '', TRUE);
+		$this->load->model('m_nilai', '', TRUE);
+	}
+	
+	function getAllMapel(){
+		/*
+		 * Processing Data
+		 */
+		$result = $this->m_nilai->getAllMapel();
+		echo json_encode($result);
 	}
 	
 	function getAll(){
 		/*
 		 * Collect Data
 		 */
-		$start  =   ($this->input->post('start', TRUE) ? $this->input->post('start', TRUE) : 0);
-		$page   =   ($this->input->post('page', TRUE) ? $this->input->post('page', TRUE) : 1);
-		$limit  =   ($this->input->post('limit', TRUE) ? $this->input->post('limit', TRUE) : 20);
+		$kelas  		=   ($this->input->post('kelas', TRUE) ? $this->input->post('kelas', TRUE) : '');
+		$thn_pelajaran 	=   ($this->input->post('thn_pelajaran', TRUE) ? $this->input->post('thn_pelajaran', TRUE) : '');
+		$mapel  		=   ($this->input->post('mapel', TRUE) ? $this->input->post('mapel', TRUE) : '');
 		
 		/*
 		 * Processing Data
 		 */
-		$result = $this->m_guru->getAll($start, $page, $limit);
+		$result = $this->m_nilai->getAll($kelas, $thn_pelajaran, $mapel);
 		echo json_encode($result);
 	}
 	
 	function save(){
 		/*
-		 * Collect Data ==> diambil dari [model.guru]
+		 * Collect Data ==> diambil dari [model.nilai]
 		 */
 		$data   = json_decode($this->input->post('data',TRUE));
 		
 		/*
 		 * Processing Data
 		 */
-		$result = $this->m_guru->save($data);
+		$result = $this->m_nilai->save($data);
 		echo json_encode($result);
 	}
 	
 	function delete(){
 		/*
-		 * Collect Data ==> diambil dari [model.guru]
+		 * Collect Data ==> diambil dari [model.nilai]
 		 */
 		$data   = json_decode($this->input->post('data',TRUE));
 		
 		/*
 		 * Processing Data
 		 */
-		$result = $this->m_guru->delete($data);
+		$result = $this->m_nilai->delete($data);
 		echo json_encode($result);
 	}
 	
@@ -80,7 +88,7 @@ class C_guru extends CI_Controller {
 			{
 				$cellvalue = $record->$key;
 				
-				if($key == strtoupper('guru')){
+				if($key == strtoupper('nilai')){
 					$this->excel->getActiveSheet()->getCell(chr($col).$row)->setValueExplicit($cellvalue, PHPExcel_Cell_DataType::TYPE_STRING);
 				}else{
 					$this->excel->getActiveSheet()->setCellValue(chr($col).$row, $cellvalue);
@@ -92,7 +100,7 @@ class C_guru extends CI_Controller {
 			$row++;
 		}		
 		
-		$filename='guru.xlsx'; //save our workbook as this file name
+		$filename='nilai.xlsx'; //save our workbook as this file name
 		//header('Content-Type: application/vnd.ms-excel'); //mime type for Excel5
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); //mime type for Excel2007
 		header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
@@ -109,7 +117,7 @@ class C_guru extends CI_Controller {
 	function export2PDF(){
 		$getdata = json_decode($this->input->post('data',TRUE));
 		$data["records"] = $getdata;
-		$data["table"] = "guru";
+		$data["table"] = "nilai";
 		
 		//html2pdf
 		//Load the library
@@ -119,13 +127,13 @@ class C_guru extends CI_Controller {
 		$this->html2pdf->folder('./temp/');
 		
 		//Set the filename to save/download as
-		$this->html2pdf->filename('guru.pdf');
+		$this->html2pdf->filename('nilai.pdf');
 		
 		//Set the paper defaults
 		$this->html2pdf->paper('a4', 'portrait');
 		
 		//Load html view
-		$this->html2pdf->html($this->load->view('pdf_guru', $data, true));
+		$this->html2pdf->html($this->load->view('pdf_nilai', $data, true));
 		
 		if($path = $this->html2pdf->create('save')) {
 			//PDF was successfully saved or downloaded
@@ -136,12 +144,12 @@ class C_guru extends CI_Controller {
 	function printRecords(){
 		$getdata = json_decode($this->input->post('data',TRUE));
 		$data["records"] = $getdata;
-		$data["table"] = "guru";
-		$print_view=$this->load->view("p_guru.php",$data,TRUE);
+		$data["table"] = "nilai";
+		$print_view=$this->load->view("p_nilai.php",$data,TRUE);
 		if(!file_exists("temp")){
 			mkdir("temp");
 		}
-		$print_file=fopen("temp/guru.html","w+");
+		$print_file=fopen("temp/nilai.html","w+");
 		fwrite($print_file, $print_view);
 		echo '1';
 	}	

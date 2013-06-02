@@ -30,6 +30,18 @@ Ext.define('SDIT.controller.Main', {
             'appHeader button[action=dtsiswa]': {
                 click: this.dtsiswa_click
             },
+            'appHeader button[action=dtkelas]': {
+                click: this.dtkelas_click
+            },
+            'appHeader button[action=dtsiswakelas]': {
+                click: this.dtsiswakelas_click
+            },
+            'appHeader button[action=dtmapel]': {
+                click: this.dtmapel_click
+            },
+            'appHeader button[action=dtnilai]': {
+                click: this.dtnilai_click
+            },
             'contentPanel': {
                 resize: 'centerContent'
             }
@@ -53,6 +65,26 @@ Ext.define('SDIT.controller.Main', {
     dtsiswa_click: function(){
         console.log('data siswa click');
         this.setActivePage('SDIT.view.MASTER.Siswa', 'Siswa');
+    },
+    
+    dtkelas_click: function(){
+        console.log('data kelas click');
+        this.setActivePage('SDIT.view.MASTER.Kelas', 'Kelas');
+    },
+    
+    dtsiswakelas_click: function(){
+        console.log('data kelas click');
+        this.setActivePage('SDIT.view.MASTER.Siswakelas', 'Siswa per Kelas');
+    },
+    
+    dtmapel_click: function(){
+        console.log('data mata pelajaran click');
+        this.setActivePage('SDIT.view.MASTER.Mapel', 'Mata Pelajaran');
+    },
+    
+    dtnilai_click: function(){
+        console.log('data Nilai Siswa click');
+        this.setActivePage('SDIT.view.MASTER.Nilai', 'Penilaian');
     },
     
     setActivePage: function(className, title){

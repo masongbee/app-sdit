@@ -24,8 +24,8 @@ class M_siswa extends CI_Model{
 	 * @return json
 	 */
 	function getAll($start, $page, $limit){
-		$query  = $this->db->limit($limit, $start)->order_by('siswa_nama', 'ASC')->get('m_siswa')->result();
-		$total  = $this->db->get('m_siswa')->num_rows();
+		$query  = $this->db->limit($limit, $start)->order_by('siswa_nama', 'ASC')->get('siswa')->result();
+		$total  = $this->db->get('siswa')->num_rows();
 		
 		$data   = array();
 		foreach($query as $result){
@@ -55,11 +55,11 @@ class M_siswa extends CI_Model{
 		
 		$pkey = array('siswa_id'=>$data->siswa_id);
 		
-		if($this->db->get_where('m_siswa', $pkey)->num_rows() > 0){
+		if($this->db->get_where('siswa', $pkey)->num_rows() > 0){
 			/*
 			 * Data Exist
 			 */
-			$this->db->where($pkey)->update('m_siswa', $data);
+			$this->db->where($pkey)->update('siswa', $data);
 			$last   = $data;
 			
 		}else{
@@ -81,12 +81,12 @@ class M_siswa extends CI_Model{
 							 'siswa_nama_wali'=>$data->siswa_nama_wali,
 							 'siswa_pekerjaan'=>$data->siswa_pekerjaan
 						);
-			$this->db->insert('m_siswa', $arrdata);
-			$last   = $this->db->order_by('siswa_nama', 'ASC')->get('m_siswa')->row();
+			$this->db->insert('siswa', $arrdata);
+			$last   = $this->db->order_by('siswa_nama', 'ASC')->get('siswa')->row();
 			
 		}
 		
-		$total  = $this->db->get('m_siswa')->num_rows();
+		$total  = $this->db->get('siswa')->num_rows();
 		
 		$json   = array(
 						"success"   => TRUE,
@@ -110,10 +110,10 @@ class M_siswa extends CI_Model{
 		$this->firephp->log($data);
 		$pkey = array('siswa_id'=>$data->siswa_id);
 		
-		$this->db->where($pkey)->delete('m_siswa');
+		$this->db->where($pkey)->delete('siswa');
 		
-		$total  = $this->db->get('m_siswa')->num_rows();
-		$last = $this->db->get('m_siswa')->result();
+		$total  = $this->db->get('siswa')->num_rows();
+		$last = $this->db->get('siswa')->result();
 		
 		$json   = array(
 						"success"   => TRUE,
