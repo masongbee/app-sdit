@@ -50,12 +50,9 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                     }
                 }
             },
+            pageSize: 20,
             autoLoad: true
         });
-        
-        var ftest = function(angka = 0){
-            console.log(angka);
-        };
         
         var enable_form = function(){
             console.log('enable form');
@@ -106,13 +103,6 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                 { text: 'siswa_nama_wali', dataIndex: 'siswa_nama_wali', width: 130 },
                 { text: 'siswa_pekerjaan', dataIndex: 'siswa_pekerjaan', width: 120 }
             ],
-            /*dockedItems: [{
-                xtype: 'toolbar',
-                dock: 'top',
-                items: [
-                    { xtype: 'button', text: 'Button 1', handler: function(){ftest(19);} }
-                ]
-            }],*/
             dockedItems: [
                 {
                     xtype: 'toolbar',

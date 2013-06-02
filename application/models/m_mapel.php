@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * Class	: M_guru
+ * Class	: M_mapel
  * 
- * Table	: guru
+ * Table	: mapel
  *  
  * @author masongbee
  *
  */
-class M_guru extends CI_Model{
+class M_mapel extends CI_Model{
 
 	function __construct(){
 		parent::__construct();
@@ -24,8 +24,8 @@ class M_guru extends CI_Model{
 	 * @return json
 	 */
 	function getAll($start, $page, $limit){
-		$query  = $this->db->limit($limit, $start)->order_by('guru_nama', 'ASC')->get('guru')->result();
-		$total  = $this->db->get('guru')->num_rows();
+		$query  = $this->db->limit($limit, $start)->order_by('mapel_nama', 'ASC')->get('mapel')->result();
+		$total  = $this->db->get('mapel')->num_rows();
 		
 		$data   = array();
 		foreach($query as $result){
@@ -53,13 +53,13 @@ class M_guru extends CI_Model{
 	function save($data){
 		$last   = NULL;
 		
-		$pkey = array('guru_id'=>$data->guru_id);
+		$pkey = array('mapel_id'=>$data->mapel_id);
 		
-		if($this->db->get_where('guru', $pkey)->num_rows() > 0){
+		if($this->db->get_where('mapel', $pkey)->num_rows() > 0){
 			/*
 			 * Data Exist
 			 */
-			$this->db->where($pkey)->update('guru', $data);
+			$this->db->where($pkey)->update('mapel', $data);
 			$last   = $data;
 			
 		}else{
@@ -68,26 +68,28 @@ class M_guru extends CI_Model{
 			 * 
 			 * Process Insert
 			 */
+			/* Cek db.mapel.mapel_nama ==> Jika sudah ada maka tidak boleh ditambahkan */
+			if($this->db->get_where('mapel', array('mapel_nama'=>$data->mapel_nama))->num_rows() > 0){
+				$json   = array(
+								"success"   => FALSE,
+								"message"   => 'Data sudah pernah ditambahkan',
+								'total'     => 0,
+								"data"      => ''
+				);
+				
+				return $json;
+			}
+			
 			$this->firephp->log($data);
 			$arrdata = array(
-							 'guru_nik'=>$data->guru_nik,
-							 'guru_nama'=>$data->guru_nama,
-							 'guru_tmptlahir'=>$data->guru_tmptlahir,
-							 'guru_tgllahir'=>date('Y-m-d', strtotime($data->guru_tgllahir)),
-							 'guru_alamat'=>$data->guru_alamat,
-							 'guru_telp'=>$data->guru_telp,
-							 'guru_hp'=>$data->guru_hp,
-							 'guru_status'=>$data->guru_status,
-							 'guru_pendidikan'=>$data->guru_pendidikan,
-							 'guru_thnmasuk'=>$data->guru_thnmasuk,
-							 'guru_jabatan'=>$data->guru_jabatan
-						);
-			$this->db->insert('guru', $arrdata);
-			$last   = $this->db->order_by('guru_nama', 'ASC')->get('guru')->row();
+				'mapel_nama'=>$data->mapel_nama
+			);
+			$this->db->insert('mapel', $arrdata);
+			$last   = $this->db->order_by('mapel_nama', 'ASC')->get('mapel')->row();
 			
 		}
 		
-		$total  = $this->db->get('guru')->num_rows();
+		$total  = $this->db->get('mapel')->num_rows();
 		
 		$json   = array(
 						"success"   => TRUE,
@@ -109,12 +111,12 @@ class M_guru extends CI_Model{
 	 */
 	function delete($data){
 		$this->firephp->log($data);
-		$pkey = array('guru_id'=>$data->guru_id);
+		$pkey = array('mapel_id'=>$data->mapel_id);
 		
-		$this->db->where($pkey)->delete('guru');
+		$this->db->where($pkey)->delete('mapel');
 		
-		$total  = $this->db->get('guru')->num_rows();
-		$last = $this->db->get('guru')->result();
+		$total  = $this->db->get('mapel')->num_rows();
+		$last = $this->db->get('mapel')->result();
 		
 		$json   = array(
 						"success"   => TRUE,

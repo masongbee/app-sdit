@@ -51,12 +51,9 @@ Ext.define('SDIT.view.MASTER.Guru', {
                     }
                 }
             },
+            pageSize: 20,
             autoLoad: true
         });
-        
-        var ftest = function(angka = 0){
-            console.log(angka);
-        };
         
         var enable_form = function(){
             console.log('enable form');
@@ -108,13 +105,6 @@ Ext.define('SDIT.view.MASTER.Guru', {
                 { text: 'guru_thnmasuk', dataIndex: 'guru_thnmasuk', width: 120 },
                 { text: 'guru_jabatan', dataIndex: 'guru_jabatan' }
             ],
-            /*dockedItems: [{
-                xtype: 'toolbar',
-                dock: 'top',
-                items: [
-                    { xtype: 'button', text: 'Button 1', handler: function(){ftest(19);} }
-                ]
-            }],*/
             dockedItems: [
                 {
                     xtype: 'toolbar',
@@ -135,7 +125,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
                     xtype: 'pagingtoolbar',
                     store: store,
                     dock: 'bottom',
-                    displayInfo: false
+                    displayInfo: true
                 }
             ],
             
@@ -204,7 +194,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
                             name: 'guru_tmptlahir',
                             fieldLabel: 'Tempat Lahir',
                             emptyText: 'Tempat Lahir',
-                            allowBlank: false
+                            allowBlank: true
                         }, {
                             xtype: 'label',
                             text: ',',
@@ -217,7 +207,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
                             width: 100,
                             emptyText: 'Tgl Lahir',
                             margin: '0 5 0 0',
-                            allowBlank: false
+                            allowBlank: true
                         }]
                     }, {
                         xtype     : 'textareafield',
@@ -236,7 +226,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
                             name: 'guru_telp',
                             fieldLabel: 'Telp',
                             emptyText: 'Telp',
-                            allowBlank: false,
+                            allowBlank: true,
                             maskRe: /[\d\-]/
                         }, {
                             xtype: 'label',
@@ -247,7 +237,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
                             fieldLabel: 'HP',
                             emptyText: 'HP',
                             margin: '0 5 0 0',
-                            allowBlank: false,
+                            allowBlank: true,
                             maskRe: /[\d\-]/
                         }]
                     }]
@@ -284,12 +274,12 @@ Ext.define('SDIT.view.MASTER.Guru', {
                         name: 'guru_status',
                         fieldLabel: 'Status',
                         emptyText: 'Status',
-                        allowBlank: false
+                        allowBlank: true
                     }, {
                         name: 'guru_pendidikan',
                         fieldLabel: 'Pendidikan Terakhir',
                         emptyText: 'Pendidikan Terakhir',
-                        allowBlank: false
+                        allowBlank: true
                     }, {
                         xtype: 'fieldcontainer',
                         fieldLabel: 'Tahun Masuk',
@@ -302,7 +292,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
                             name: 'guru_thnmasuk',
                             fieldLabel: 'Tahun Masuk',
                             emptyText: 'xxxx',
-                            allowBlank: false,
+                            allowBlank: true,
                             width: 50,
                             maskRe: /[\d\-]/,
                             regex: /^\d{4}$/,
@@ -312,7 +302,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
                         name: 'guru_jabatan',
                         fieldLabel: 'Jabatan',
                         emptyText: 'Jabatan',
-                        allowBlank: false
+                        allowBlank: true
                     }]
                 }]
             }],

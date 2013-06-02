@@ -25,3 +25,27 @@
 .icon-remove {
     background-image: url('../images/icons/delete.png') !important;
 }
+
+.icon-database {
+    background-image: url('../images/icons/database_save.png') !important;
+}
+
+.icon-organisation {
+    background-image: url('../images/icons/database_save.png') !important;
+}
+
+.icon-vcard {
+    background-image: url('../images/icons/vcard_add.png') !important;
+}
+
+.icon-book {
+    background-image: url('../images/icons/book_add.png') !important;
+}
+
+.icon-award_star {
+    background-image: url('../images/icons/award_star_add.png') !important;
+}
+
+.icon-report_user {
+    background-image: url('../images/icons/report_user.png') !important;
+}
