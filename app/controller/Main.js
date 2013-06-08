@@ -84,7 +84,7 @@ Ext.define('SDIT.controller.Main', {
     
     dtnilai_click: function(){
         console.log('data Nilai Siswa click');
-        this.setActivePage('SDIT.view.MASTER.Nilai', 'Penilaian');
+        this.setActivePage('SDIT.view.PENILAIAN.Nilai', 'Penilaian');
     },
     
     setActivePage: function(className, title){
