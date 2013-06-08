@@ -1,4 +1,4 @@
-Ext.define('SDIT.view.MASTER.Nilai', {
+Ext.define('SDIT.view.PENILAIAN.Nilai', {
     extend: 'Ext.form.Panel',
     
     title: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nilai',
