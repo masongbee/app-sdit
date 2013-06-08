@@ -92,10 +92,10 @@ Ext.define('SDIT.view.Header', {
 					}]
 				}
 			},{
-				text: 'Penilaian',
+				text: 'Raport',
 				iconCls: 'icon-award_star',
 				textAlign: 'left',
-				action: 'dtnilai'
+				action: 'dtraport'
 			},{
 				text: 'Rekap Nilai',
 				iconCls: 'icon-report_user',
