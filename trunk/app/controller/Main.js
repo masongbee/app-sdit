@@ -39,8 +39,8 @@ Ext.define('SDIT.controller.Main', {
             'appHeader button[action=dtmapel]': {
                 click: this.dtmapel_click
             },
-            'appHeader button[action=dtnilai]': {
-                click: this.dtnilai_click
+            'appHeader button[action=dtraport]': {
+                click: this.dtraport_click
             },
             'contentPanel': {
                 resize: 'centerContent'
@@ -82,9 +82,9 @@ Ext.define('SDIT.controller.Main', {
         this.setActivePage('SDIT.view.MASTER.Mapel', 'Mata Pelajaran');
     },
     
-    dtnilai_click: function(){
+    dtraport_click: function(){
         console.log('data Nilai Siswa click');
-        this.setActivePage('SDIT.view.PENILAIAN.Nilai', 'Penilaian');
+        this.setActivePage('SDIT.view.PENILAIAN.Raport', 'Raport');
     },
     
     setActivePage: function(className, title){
