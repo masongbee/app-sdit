@@ -97,10 +97,10 @@ Ext.define('SDIT.view.Header', {
 				textAlign: 'left',
 				action: 'dtraport'
 			},{
-				text: 'Rekap Nilai',
+				text: 'Rekap Raport',
 				iconCls: 'icon-report_user',
 				textAlign: 'left',
-				action: 'dtnilai'
+				action: 'dtrekapraport'
 			} ]
 		}];
 		

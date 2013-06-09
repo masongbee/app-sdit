@@ -57,6 +57,23 @@ Ext.define('SDIT.view.MASTER.Siswakelas', {
         var refreshSelection = function() {
             grid.getSelectionModel().select(grid.selectedIndex);
         };
+		
+		var get_thn_pelajaran = function(){
+			var date_now = new Date();
+			var bln_sekarang = date_now.getMonth()+1;
+			var thn_sekarang = date_now.getFullYear();
+			var prev_thn = thn_sekarang - 1;
+			var next_thn = thn_sekarang + 1;
+			
+			var default_value_thnpelajaran = "";
+			if (bln_sekarang > 6) {
+				default_value_thnpelajaran = thn_sekarang+"/"+next_thn;
+			}else{
+				default_value_thnpelajaran = prev_thn+"/"+thn_sekarang;
+			}
+			
+			return default_value_thnpelajaran;
+		};
         /* FUNCTION end */
         
 		/* STORE start */
@@ -192,6 +209,38 @@ Ext.define('SDIT.view.MASTER.Siswakelas', {
 		/* STORE end */
         
         /* GRID start */
+		var thn_pelajaran_filterField = Ext.create('Ext.form.field.Text', {
+			fieldLabel: '<b>Tahun Pelajaran</b>',
+			labelWidth: 100,
+			width: 200,
+			allowBlank: false
+		});
+		var kelas_filterField = Ext.create('Ext.form.field.ComboBox', {
+			fieldLabel: '<b>Kelas</b>',
+			labelWidth: 40,
+			store: kelasStore,
+			queryMode: 'local',
+			displayField:'kelas_tingkatnama',
+			valueField: 'kelas_id',
+	        typeAhead: false,
+	        loadingText: 'Searching...',
+	        hideTrigger:false,
+			allowBlank: false,
+	        itemSelector: 'div.search-item',
+			triggerAction: 'all',
+			lazyRender:true,
+			listClass: 'x-combo-list-small',
+			width: 360,
+			forceSelection:true,
+			listeners: {
+				change: function(me, newValue, oldValue){
+					store.proxy.extraParams.kelas = newValue;
+					store.proxy.extraParams.thn_pelajaran = thn_pelajaran_filterField.getValue();
+					store.load();
+				}
+			}
+		});
+		
         var rowEditor = Ext.create('Ext.grid.plugin.RowEditing', {
             clicksToEdit: 2,
             clicksToMoveEditor: 1,
@@ -319,7 +368,9 @@ Ext.define('SDIT.view.MASTER.Siswakelas', {
                         iconCls	: 'icon-remove',
                         disabled: true,
                         handler : delete_grid
-                    }]
+                    }, '-', thn_pelajaran_filterField, {
+						xtype: 'splitter'
+					}, kelas_filterField]
                 },
                 {
                     xtype: 'pagingtoolbar',
@@ -340,6 +391,9 @@ Ext.define('SDIT.view.MASTER.Siswakelas', {
 				afterrender: function(){
 					kelasStore.reload();
 					siswaStore.reload();
+					
+					var thn_pelajaran_sekarang = get_thn_pelajaran();
+					thn_pelajaran_filterField.setValue(thn_pelajaran_sekarang);
 				},
                 
                 itemclick: gridSelection

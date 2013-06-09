@@ -1,13 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * Class	: M_nilai
+ * Class	: M_raport
  * 
- * Table	: nilai
- *  
- * @author masongbee
+ * Table	: nilai_siswa
  *
  */
-class M_nilai extends CI_Model{
+class M_raport extends CI_Model{
 
 	function __construct(){
 		parent::__construct();

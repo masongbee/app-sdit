@@ -42,6 +42,9 @@ Ext.define('SDIT.controller.Main', {
             'appHeader button[action=dtraport]': {
                 click: this.dtraport_click
             },
+            'appHeader button[action=dtrekapraport]': {
+                click: this.dtrekapraport_click
+            },
             'contentPanel': {
                 resize: 'centerContent'
             }
@@ -83,8 +86,13 @@ Ext.define('SDIT.controller.Main', {
     },
     
     dtraport_click: function(){
-        console.log('data Nilai Siswa click');
+        console.log('data Raport Siswa click');
         this.setActivePage('SDIT.view.PENILAIAN.Raport', 'Raport');
+    },
+    
+    dtrekapraport_click: function(){
+        console.log('data Rekap Raport Siswa click');
+        this.setActivePage('SDIT.view.PENILAIAN.Rekap_raport', 'Rekap Raport');
     },
     
     setActivePage: function(className, title){

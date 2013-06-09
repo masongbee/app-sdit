@@ -30,17 +30,20 @@ class C_siswakelas extends CI_Controller {
 		$start  =   ($this->input->post('start', TRUE) ? $this->input->post('start', TRUE) : 0);
 		$page   =   ($this->input->post('page', TRUE) ? $this->input->post('page', TRUE) : 1);
 		$limit  =   ($this->input->post('limit', TRUE) ? $this->input->post('limit', TRUE) : 20);
+		/* filter */
+		$kelas  		=   ($this->input->post('kelas', TRUE) ? $this->input->post('kelas', TRUE) : '');
+		$thn_pelajaran 	=   ($this->input->post('thn_pelajaran', TRUE) ? $this->input->post('thn_pelajaran', TRUE) : '');
 		
 		/*
 		 * Processing Data
 		 */
-		$result = $this->m_siswakelas->getAll($start, $page, $limit);
+		$result = $this->m_siswakelas->getAll($thn_pelajaran, $kelas, $start, $page, $limit);
 		echo json_encode($result);
 	}
 	
 	function save(){
 		/*
-		 * Collect Data ==> diambil dari [model.siswakelas]
+		 * Collect Data 
 		 */
 		$data   = json_decode($this->input->post('data',TRUE));
 		
@@ -53,7 +56,7 @@ class C_siswakelas extends CI_Controller {
 	
 	function delete(){
 		/*
-		 * Collect Data ==> diambil dari [model.siswakelas]
+		 * Collect Data 
 		 */
 		$data   = json_decode($this->input->post('data',TRUE));
 		
