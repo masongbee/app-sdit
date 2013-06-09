@@ -24,7 +24,7 @@ class C_guru extends CI_Controller {
 	
 	function save(){
 		/*
-		 * Collect Data ==> diambil dari [model.guru]
+		 * Collect Data 
 		 */
 		$data   = json_decode($this->input->post('data',TRUE));
 		
@@ -37,7 +37,7 @@ class C_guru extends CI_Controller {
 	
 	function delete(){
 		/*
-		 * Collect Data ==> diambil dari [model.guru]
+		 * Collect Data 
 		 */
 		$data   = json_decode($this->input->post('data',TRUE));
 		

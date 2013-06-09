@@ -1,50 +1,14 @@
-Ext.define('SDIT.view.PENILAIAN.Nilai', {
+Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
     extend: 'Ext.form.Panel',
     
-    title: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nilai',
+    title: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rekap Raport',
     layout: 'border',
     hideMode: Ext.isIE ? 'offsets' : 'display',
     overflowY: 'auto',
     
     initComponent: function(){
         /* FUNCTION start */
-        var add_grid = function(){
-            var default_data = {
-                kelas_id : 0,
-                kelas_tingkat : '',
-                kelas_nama : ''
-            };
-            rowEditor.cancelEdit();
-            grid.getStore().insert(0, default_data);
-            grid.getSelectionModel().getSelection()[0];
-            rowEditor.startEdit(0, 0);
-        };
-        
-        var delete_grid = function(dataview, selections){
-            var selection = grid.getSelectionModel().getSelection()[0];
-            if(selection){
-                Ext.Msg.confirm('Confirmation', 'Are you sure to delete this data: Nama Nilai = \"'+selection.data.kelas_nama+'\"?', function(btn){
-                    if (btn == 'yes'){
-                        grid.down('#btndelete').setDisabled(true);
-                        
-                        grid.getStore().remove(selection);
-                        grid.getStore().sync();
-                    }
-                });
-                
-            }
-        };
-        
-        var gridSelection = function(me, record, item, index, e, eOpts){
-            grid.selectedIndex = index;
-            grid.getView().saveScrollState();
-        };
-        
-        var refreshSelection = function() {
-            grid.getSelectionModel().select(grid.selectedIndex);
-        };
-		
-		var get_thn_pelajaran = function(){
+        var get_thn_pelajaran = function(){
 			var date_now = new Date();
 			var bln_sekarang = date_now.getMonth()+1;
 			var thn_sekarang = date_now.getFullYear();
@@ -308,86 +272,142 @@ Ext.define('SDIT.view.PENILAIAN.Nilai', {
 					align: 'left',
 					flex: 1
 				}, {
-					text: 'A',
+					text: 'Mata Pelajaran',
 					columns: [{
-						text: 'UH 1',
-						dataIndex: 'nilai_uh1',
-						align: 'center',
-						width: 70,
-						editor: Ext.create('Ext.form.field.Number')
+						text: 'Muatan Nasional',
+						columns: [{
+							text: 'Pendidikan Agama Islam',
+							columns: [{
+								text: 'QH',
+								dataIndex: 'nilai_uh1',
+								align: 'center',
+								width: 60,
+								renderer: function(value){
+									return Ext.util.Format.currency(value, '&nbsp;', 1);
+								}
+							}, {
+								text: 'AA',
+								dataIndex: 'nilai_uh2',
+								align: 'center',
+								width: 60,
+								renderer: function(value){
+									return Ext.util.Format.currency(value, '&nbsp;', 1);
+								}
+							}, {
+								text: 'Fiqh',
+								dataIndex: 'nilai_uh3',
+								align: 'center',
+								width: 60,
+								renderer: function(value){
+									return Ext.util.Format.currency(value, '&nbsp;', 1);
+								}
+							}, {
+								text: 'SN',
+								dataIndex: 'nilai_uh3',
+								align: 'center',
+								width: 60,
+								renderer: function(value){
+									return Ext.util.Format.currency(value, '&nbsp;', 1);
+								}
+							}]
+						}, {
+							text: 'PKn',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}, {
+							text: 'Bhs.<br/>Indo',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}, {
+							text: 'Mtk',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}, {
+							text: 'IPA',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}, {
+							text: 'IPS',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}, {
+							text: 'SBK',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}, {
+							text: 'Penjas<br/>Orkes',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}]
 					}, {
-						text: 'UH 2',
-						dataIndex: 'nilai_uh2',
-						align: 'center',
-						width: 70,
-						editor: Ext.create('Ext.form.field.Number')
-					}, {
-						text: 'UH 3',
-						dataIndex: 'nilai_uh3',
-						align: 'center',
-						width: 70,
-						editor: Ext.create('Ext.form.field.Number')
+						text: 'Muatan Lokal',
+						columns: [{
+							text: 'Bhs.<br/>Arab',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}, {
+							text: 'Bhs.<br/>Inggr',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}, {
+							text: 'Bhs.<br/>Jawa',
+							dataIndex: 'nilai_uh_rt2',
+							align: 'center',
+							width: 60,
+							renderer: function(value){
+								return Ext.util.Format.currency(value, '&nbsp;', 1);
+							}
+						}]
 					}]
 				}, {
-					text: 'Rt2',
+					text: '&sum;',
 					dataIndex: 'nilai_uh_rt2',
 					align: 'center',
-					width: 70,
+					width: 60,
 					renderer: function(value){
 						return Ext.util.Format.currency(value, '&nbsp;', 1);
 					}
 				}, {
-					text: 'B',
-					columns: [{
-						text: 'UTS',
-						dataIndex: 'nilai_uts',
-						align: 'center',
-						width: 70,
-						editor: Ext.create('Ext.form.field.Number')
-					}]
-				}, {
-					text: 'C',
-					columns: [{
-						text: 'T1',
-						dataIndex: 'nilai_t1',
-						align: 'center',
-						width: 70,
-						editor: Ext.create('Ext.form.field.Number')
-					}, {
-						text: 'T2',
-						dataIndex: 'nilai_t2',
-						align: 'center',
-						width: 70,
-						editor: Ext.create('Ext.form.field.Number')
-					}, {
-						text: 'T3',
-						dataIndex: 'nilai_t3',
-						align: 'center',
-						width: 70,
-						editor: Ext.create('Ext.form.field.Number')
-					}]
-				}, {
-					text: 'Rt2',
-					dataIndex: 'nilai_t_rt2',
+					text: 'Rata2',
+					dataIndex: 'nilai_uh_rt2',
 					align: 'center',
-					width: 70,
-					renderer: function(value){
-						return Ext.util.Format.currency(value, '&nbsp;', 1);
-					}
-				}, {
-					text: 'D',
-					columns: [{
-						text: 'UAS',
-						dataIndex: 'nilai_uas',
-						align: 'center',
-						width: 70,
-						editor: Ext.create('Ext.form.field.Number')
-					}]
-				}, {
-					text: 'N=((A + B + C + D) / 4)',
-					dataIndex: 'nilai_total',
-					align: 'center',
-					width: 180,
+					width: 80,
 					renderer: function(value){
 						return Ext.util.Format.currency(value, '&nbsp;', 1);
 					}
@@ -425,12 +445,9 @@ Ext.define('SDIT.view.PENILAIAN.Nilai', {
 					
 					var thn_pelajaran_sekarang = get_thn_pelajaran();
 					thn_pelajaran_filterField.setValue(thn_pelajaran_sekarang);
-				},
-                
-                itemclick: gridSelection
+				}
             }
         });
-        grid.getView().on('refresh', refreshSelection, this);
         /* GRID end */
         
         var tabs = Ext.create('Ext.tab.Panel', {

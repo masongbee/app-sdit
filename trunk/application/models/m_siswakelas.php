@@ -65,16 +65,29 @@ class M_siswakelas extends CI_Model{
 	 * @param number $limit
 	 * @return json
 	 */
-	function getAll($start, $page, $limit){
+	function getAll($thn_pelajaran, $kelas, $start, $page, $limit){
 		$sql = "SELECT siswa_kelas.*, kelas.kelas_tingkat, kelas.kelas_nama,
 				CONCAT('[', kelas.kelas_tingkat, '] - ', kelas.kelas_nama) AS kelas_tingkatnama,
 				siswa.siswa_nama,
 				CONCAT('[', siswa.siswa_nis, '] - ', siswa.siswa_nama) AS siswa_nisnama
 			FROM siswa_kelas JOIN kelas ON(kelas.kelas_id = siswa_kelas.kelas_id)
-			JOIN siswa ON(siswa.siswa_id = siswa_kelas.siswa_id)
-			LIMIT ".$start.",".$limit;
+			JOIN siswa ON(siswa.siswa_id = siswa_kelas.siswa_id)";
+		if($thn_pelajaran!='' && $kelas!=''){
+			$sql .= " WHERE siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."' AND siswa_kelas.kelas_id = ".$kelas;
+		}
+		$sql .= " LIMIT ".$start.",".$limit;
+		
+		/* query untuk mendapatkan total record */
+		$sql_total = "SELECT COUNT(*) AS total
+			FROM siswa_kelas JOIN kelas ON(kelas.kelas_id = siswa_kelas.kelas_id)
+			JOIN siswa ON(siswa.siswa_id = siswa_kelas.siswa_id)";
+		if($thn_pelajaran!='' && $kelas!=''){
+			$sql_total .= " WHERE siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."' AND siswa_kelas.kelas_id = ".$kelas;
+		}
+		
 		$query  = $this->db->query($sql)->result();
-		$total  = $this->db->get('siswa_kelas')->num_rows();
+		//$total  = $this->db->get('siswa_kelas')->num_rows();
+		$total 	= $this->db->query($sql_total)->row()->total;
 		
 		$data   = array();
 		foreach($query as $result){

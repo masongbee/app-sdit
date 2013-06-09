@@ -53,10 +53,10 @@ Ext.define('SDIT.view.PENILAIAN.Raport', {
             proxy: {
                 type: 'ajax',
                 api: {
-                    read    : base_url+'index.php/c_nilai/getAll',
-                    create	: base_url+'index.php/c_nilai/save',
-                    update	: base_url+'index.php/c_nilai/save',
-                    destroy	: base_url+'index.php/c_nilai/delete'
+                    read    : base_url+'index.php/c_raport/getAll',
+                    create	: base_url+'index.php/c_raport/save',
+                    update	: base_url+'index.php/c_raport/save',
+                    destroy	: base_url+'index.php/c_raport/delete'
                 },
                 actionMethods: {
                     read    : 'POST',
@@ -136,7 +136,7 @@ Ext.define('SDIT.view.PENILAIAN.Raport', {
             proxy: {
                 type: 'ajax',
                 api: {
-                    read    : base_url+'index.php/c_nilai/getAllMapel'
+                    read    : base_url+'index.php/c_raport/getAllMapel'
                 },
                 actionMethods: {
                     read    : 'POST'
@@ -363,11 +363,11 @@ Ext.define('SDIT.view.PENILAIAN.Raport', {
 						xtype: 'fieldcontainer',
 						layout: 'hbox',
 						defaultType: 'button',
-						items: [kelas_filterField, {
+						items: [thn_pelajaran_filterField, {
 							xtype: 'splitter'
 						}, {
 							xtype: 'splitter'
-						}, thn_pelajaran_filterField, {
+						}, kelas_filterField, {
 							xtype: 'splitter'
 						}, {
 							xtype: 'splitter'

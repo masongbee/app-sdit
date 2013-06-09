@@ -24,7 +24,7 @@ class C_mapel extends CI_Controller {
 	
 	function save(){
 		/*
-		 * Collect Data ==> diambil dari [model.mapel]
+		 * Collect Data 
 		 */
 		$data   = json_decode($this->input->post('data',TRUE));
 		
@@ -37,7 +37,7 @@ class C_mapel extends CI_Controller {
 	
 	function delete(){
 		/*
-		 * Collect Data ==> diambil dari [model.mapel]
+		 * Collect Data 
 		 */
 		$data   = json_decode($this->input->post('data',TRUE));
 		
