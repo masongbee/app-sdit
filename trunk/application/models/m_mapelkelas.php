@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * Class	: M_siswakelas
+ * Class	: M_mapelkelas
  * 
- * Table	: siswakelas
+ * Table	: mapelkelas
  *  
  * @author masongbee
  *
  */
-class M_siswakelas extends CI_Model{
+class M_mapelkelas extends CI_Model{
 
 	function __construct(){
 		parent::__construct();
@@ -34,11 +34,32 @@ class M_siswakelas extends CI_Model{
 		return $json;
 	}
 	
-	function getAllSiswa(){
-		$sql = "SELECT siswa_id, siswa_nama, CONCAT('[', siswa_nis, '] - ', siswa_nama) AS siswa_nisnama
-			FROM siswa";
+	function getAllMapel(){
+		$sql = "SELECT mapel_id, mapel_nama
+			FROM mapel";
 		$query  = $this->db->query($sql)->result();
 		$total  = $this->db->get('kelas')->num_rows();
+		
+		$data   = array();
+		foreach($query as $result){
+			$data[] = $result;
+		}
+		
+		$json	= array(
+						'success'   => TRUE,
+						'message'   => "Loaded data",
+						'total'     => $total,
+						'data'      => $data
+		);
+		
+		return $json;
+	}
+	
+	function getAllGuru(){
+		$sql = "SELECT guru_id, guru_nama, CONCAT('[', guru_nik, '] - ', guru_nama) AS guru_niknama
+			FROM guru";
+		$query  = $this->db->query($sql)->result();
+		$total  = $this->db->get('guru')->num_rows();
 		
 		$data   = array();
 		foreach($query as $result){
@@ -66,27 +87,29 @@ class M_siswakelas extends CI_Model{
 	 * @return json
 	 */
 	function getAll($thn_pelajaran, $kelas, $start, $page, $limit){
-		$sql = "SELECT siswa_kelas.*, kelas.kelas_tingkat, kelas.kelas_nama,
+		$sql = "SELECT mapel_kelas.*, kelas.kelas_tingkat, kelas.kelas_nama,
 				CONCAT('[', kelas.kelas_tingkat, '] - ', kelas.kelas_nama) AS kelas_tingkatnama,
-				siswa.siswa_nama,
-				CONCAT('[', siswa.siswa_nis, '] - ', siswa.siswa_nama) AS siswa_nisnama
-			FROM siswa_kelas JOIN kelas ON(kelas.kelas_id = siswa_kelas.kelas_id)
-			JOIN siswa ON(siswa.siswa_id = siswa_kelas.siswa_id)";
+				mapel.mapel_id, mapel.mapel_nama, guru.guru_id, guru_nama,
+				CONCAT('[', guru.guru_nik, '] - ', guru.guru_nama) AS guru_niknama
+			FROM mapel_kelas JOIN kelas ON(kelas.kelas_id = mapel_kelas.kelas_id)
+			JOIN guru ON(guru.guru_id = mapel_kelas.guru_id)
+			JOIN mapel ON(mapel.mapel_id = mapel_kelas.mapel_id)";
 		if($thn_pelajaran!='' && $kelas!=''){
-			$sql .= " WHERE siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."' AND siswa_kelas.kelas_id = ".$kelas;
+			$sql .= " WHERE mapel_kelas.mapelkelas_thnpelajaran = '".$thn_pelajaran."' AND mapel_kelas.kelas_id = ".$kelas;
 		}
 		$sql .= " LIMIT ".$start.",".$limit;
 		
 		/* query untuk mendapatkan total record */
 		$sql_total = "SELECT COUNT(*) AS total
-			FROM siswa_kelas JOIN kelas ON(kelas.kelas_id = siswa_kelas.kelas_id)
-			JOIN siswa ON(siswa.siswa_id = siswa_kelas.siswa_id)";
+			FROM mapel_kelas JOIN kelas ON(kelas.kelas_id = mapel_kelas.kelas_id)
+			JOIN guru ON(guru.guru_id = mapel_kelas.guru_id)
+			JOIN mapel ON(mapel.mapel_id = mapel_kelas.mapel_id)";
 		if($thn_pelajaran!='' && $kelas!=''){
-			$sql_total .= " WHERE siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."' AND siswa_kelas.kelas_id = ".$kelas;
+			$sql_total .= " WHERE mapel_kelas.mapelkelas_thnpelajaran = '".$thn_pelajaran."' AND mapel_kelas.kelas_id = ".$kelas;
 		}
 		
 		$query  = $this->db->query($sql)->result();
-		//$total  = $this->db->get('siswa_kelas')->num_rows();
+		//$total  = $this->db->get('mapel_kelas')->num_rows();
 		$total 	= $this->db->query($sql_total)->row()->total;
 		
 		$data   = array();
@@ -115,22 +138,25 @@ class M_siswakelas extends CI_Model{
 	function save($data){
 		$last   = NULL;
 		
-		$pkey = array('siswakelas_id'=>$data->siswakelas_id);
+		$pkey = array('mapelkelas_id'=>$data->mapelkelas_id);
 		$arrdata = array(
-			'siswakelas_thnpelajaran'=>$data->siswakelas_thnpelajaran
+			'mapelkelas_thnpelajaran'=>$data->mapelkelas_thnpelajaran
 		);
 		if(is_numeric($data->kelas_tingkatnama)){
 			$arrdata['kelas_id'] = $data->kelas_tingkatnama;
 		}
-		if(is_numeric($data->siswa_nisnama)){
-			$arrdata['siswa_id'] = $data->siswa_nisnama;
+		if(is_numeric($data->guru_nama)){
+			$arrdata['guru_id'] = $data->guru_nama;
+		}
+		if(is_numeric($data->mapel_nama)){
+			$arrdata['mapel_id'] = $data->mapel_nama;
 		}
 		
-		if($this->db->get_where('siswa_kelas', $pkey)->num_rows() > 0){
+		if($this->db->get_where('mapel_kelas', $pkey)->num_rows() > 0){
 			/*
 			 * Data Exist
 			 */
-			$this->db->where($pkey)->update('siswa_kelas', $arrdata);
+			$this->db->where($pkey)->update('mapel_kelas', $arrdata);
 			$last   = $data;
 			
 		}else{
@@ -139,12 +165,12 @@ class M_siswakelas extends CI_Model{
 			 * 
 			 * Process Insert
 			 */
-			$this->db->insert('siswa_kelas', $arrdata);
-			$last   = $this->db->order_by('kelas_id', 'ASC')->get('siswa_kelas')->row();
+			$this->db->insert('mapel_kelas', $arrdata);
+			$last   = $this->db->order_by('kelas_id', 'ASC')->get('mapel_kelas')->row();
 			
 		}
 		
-		$total  = $this->db->get('siswa_kelas')->num_rows();
+		$total  = $this->db->get('mapel_kelas')->num_rows();
 		
 		$json   = array(
 						"success"   => TRUE,
@@ -166,12 +192,12 @@ class M_siswakelas extends CI_Model{
 	 */
 	function delete($data){
 		$this->firephp->log($data);
-		$pkey = array('siswakelas_id'=>$data->siswakelas_id);
+		$pkey = array('mapelkelas_id'=>$data->mapelkelas_id);
 		
-		$this->db->where($pkey)->delete('siswa_kelas');
+		$this->db->where($pkey)->delete('mapel_kelas');
 		
-		$total  = $this->db->get('siswa_kelas')->num_rows();
-		$last = $this->db->get('siswa_kelas')->result();
+		$total  = $this->db->get('mapel_kelas')->num_rows();
+		$last = $this->db->get('mapel_kelas')->result();
 		
 		$json   = array(
 						"success"   => TRUE,

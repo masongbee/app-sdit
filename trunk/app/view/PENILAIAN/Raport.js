@@ -28,7 +28,7 @@ Ext.define('SDIT.view.PENILAIAN.Raport', {
         
 		/* STORE start */
         var store = Ext.create('Ext.data.Store', {
-            storeId:'kelasStore',
+            storeId:'store',
             fields:['nilai_id',
 					'siswakelas_id',
 					'siswa_nisnama',

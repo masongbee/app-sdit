@@ -33,6 +33,9 @@ Ext.define('SDIT.controller.Main', {
             'appHeader button[action=dtkelas]': {
                 click: this.dtkelas_click
             },
+            'appHeader button[action=dtmapelkelas]': {
+                click: this.dtmapelkelas_click
+            },
             'appHeader button[action=dtsiswakelas]': {
                 click: this.dtsiswakelas_click
             },
@@ -73,6 +76,11 @@ Ext.define('SDIT.controller.Main', {
     dtkelas_click: function(){
         console.log('data kelas click');
         this.setActivePage('SDIT.view.MASTER.Kelas', 'Kelas');
+    },
+    
+    dtmapelkelas_click: function(){
+        console.log('data mapel dalam kelas click');
+        this.setActivePage('SDIT.view.MASTER.Mapelkelas', 'Mata Pelajaran dalam Kelas');
     },
     
     dtsiswakelas_click: function(){
