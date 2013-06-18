@@ -60,6 +60,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
             grid.setDisabled(true);
             
             form.setDisabled(false);
+            form.down('#btnreset').setDisabled(false);
             tabs.setActiveTab(form);
         };
         
@@ -135,6 +136,12 @@ Ext.define('SDIT.view.MASTER.Guru', {
                         console.log('enable delete');
                         this.down('#btndelete').setDisabled(!selections.length);
                     }
+                },
+                
+                itemdblclick: function(me, record, item, index){
+                    enable_form();
+                    form.down('#btnreset').setDisabled(true);
+                    form.loadRecord(record);
                 }
             }
         });
@@ -201,10 +208,10 @@ Ext.define('SDIT.view.MASTER.Guru', {
                             margin: '10 5 0 5'
                         }, {
                             xtype: 'datefield',
-                            format: 'd/m/Y',
+                            format: 'd M, Y',
                             name: 'guru_tgllahir',
                             fieldLabel: 'Tgl Lahir',
-                            width: 100,
+                            width: 140,
                             emptyText: 'Tgl Lahir',
                             margin: '0 5 0 0',
                             allowBlank: true
@@ -315,6 +322,7 @@ Ext.define('SDIT.view.MASTER.Guru', {
                     enable_grid();
                 }
             }, {
+                itemId: 'btnreset',
                 text: 'Reset',
                 handler: function() {
                     this.up('form').getForm().reset();

@@ -61,30 +61,35 @@ Ext.define('SDIT.view.Header', {
 							xtype: 'button',
 							scale: 'small',
 							iconAlign: 'left',
-							width: 175
+							width: 190
 						},
 						items: [{
-							text: 'Data Guru',
+							text: 'Guru',
 							iconCls: 'icon-teacher',
 							textAlign: 'left',
 							action: 'dtguru'
 						},{
-							text: 'Data Siswa',
+							text: 'Siswa',
 							iconCls: 'icon-user',
 							textAlign: 'left',
 							action: 'dtsiswa'
 						},{
-							text: 'Data Kelas',
+							text: 'Kelas',
 							iconCls: 'icon-organisation',
 							textAlign: 'left',
 							action: 'dtkelas'
 						},{
-							text: 'Data Siswa Kelas',
+							text: 'Mata Pelajaran dalam Kelas',
+							iconCls: 'icon-organisation',
+							textAlign: 'left',
+							action: 'dtmapelkelas'
+						},{
+							text: 'Siswa Kelas',
 							iconCls: 'icon-vcard',
 							textAlign: 'left',
 							action: 'dtsiswakelas'
 						},{
-							text: 'Data Mata Pelajaran',
+							text: 'Mata Pelajaran',
 							iconCls: 'icon-book',
 							textAlign: 'left',
 							action: 'dtmapel'

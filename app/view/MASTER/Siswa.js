@@ -11,7 +11,7 @@ Ext.define('SDIT.view.MASTER.Siswa', {
             storeId:'siswaStore',
             fields:['siswa_id','siswa_nis','siswa_nama','siswa_tmptlahir',
                     {name: 'siswa_tgllahir', type: 'date', dateFormat: 'Y-d-m', mapping: 'siswa_tgllahir'},
-                    'siswa_alamat','siswa_telp','siswa_hp','siswa_sekolah_asal','siswa_nama_wali','siswa_pekerjaan'],
+                    'siswa_alamat','siswa_telp','siswa_hp','siswa_sekolah_asal','siswa_wali_nama','siswa_wali_pekerjaan'],
             proxy: {
                 type: 'ajax',
                 api: {
@@ -59,6 +59,7 @@ Ext.define('SDIT.view.MASTER.Siswa', {
             grid.setDisabled(true);
             
             form.setDisabled(false);
+            form.down('#btnreset').setDisabled(false);
             tabs.setActiveTab(form);
         };
         
@@ -92,16 +93,16 @@ Ext.define('SDIT.view.MASTER.Siswa', {
             title: 'Grid',
             store: store,
             columns: [
-                { text: 'siswa_nis',  dataIndex: 'siswa_nis' },
-                { text: 'siswa_nama',  dataIndex: 'siswa_nama', flex: 1 },
+                { text: 'siswa_nis',  dataIndex: 'siswa_nis', locked: true, width: 80 },
+                { text: 'siswa_nama',  dataIndex: 'siswa_nama', locked: true, width: 240 },
                 { text: 'siswa_tmptlahir',  dataIndex: 'siswa_tmptlahir', width: 120 },
-                { text: 'siswa_tgllahir',  dataIndex: 'siswa_tgllahir', renderer: Ext.util.Format.dateRenderer('d-m-Y') },
-                { text: 'siswa_alamat', dataIndex: 'siswa_alamat', flex: 2 },
-                { text: 'siswa_telp', dataIndex: 'siswa_telp' },
-                { text: 'siswa_hp', dataIndex: 'siswa_hp' },
+                { text: 'siswa_tgllahir',  dataIndex: 'siswa_tgllahir', width: 110 , renderer: Ext.util.Format.dateRenderer('d-m-Y') },
+                { text: 'siswa_alamat', dataIndex: 'siswa_alamat', width: 240 },
+                { text: 'siswa_telp', dataIndex: 'siswa_telp', width: 80 },
+                { text: 'siswa_hp', dataIndex: 'siswa_hp', width: 80 },
                 { text: 'siswa_sekolah_asal', dataIndex: 'siswa_sekolah_asal', width: 140 },
-                { text: 'siswa_nama_wali', dataIndex: 'siswa_nama_wali', width: 130 },
-                { text: 'siswa_pekerjaan', dataIndex: 'siswa_pekerjaan', width: 120 }
+                { text: 'siswa_wali_nama', dataIndex: 'siswa_wali_nama', width: 130 },
+                { text: 'siswa_wali_pekerjaan', dataIndex: 'siswa_wali_pekerjaan', width: 160 }
             ],
             dockedItems: [
                 {
@@ -133,6 +134,12 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                         console.log('enable delete');
                         this.down('#btndelete').setDisabled(!selections.length);
                     }
+                },
+                
+                itemdblclick: function(me, record, item, index){
+                    enable_form();
+                    form.down('#btnreset').setDisabled(true);
+                    form.loadRecord(record);
                 }
             }
         });
@@ -199,10 +206,10 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                             margin: '10 5 0 5'
                         }, {
                             xtype: 'datefield',
-                            format: 'd/m/Y',
+                            format: 'd M, Y',
                             name: 'siswa_tgllahir',
                             fieldLabel: 'Tgl Lahir',
-                            width: 100,
+                            width: 140,
                             emptyText: 'Tgl Lahir',
                             margin: '0 5 0 0',
                             allowBlank: false
@@ -224,7 +231,7 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                             name: 'siswa_telp',
                             fieldLabel: 'Telp',
                             emptyText: 'Telp',
-                            allowBlank: false,
+                            allowBlank: true,
                             maskRe: /[\d\-]/
                         }, {
                             xtype: 'label',
@@ -235,7 +242,7 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                             fieldLabel: 'HP',
                             emptyText: 'HP',
                             margin: '0 5 0 0',
-                            allowBlank: false,
+                            allowBlank: true,
                             maskRe: /[\d\-]/
                         }]
                     }]
@@ -272,9 +279,9 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                         name: 'siswa_sekolah_asal',
                         fieldLabel: 'Sekolah Asal',
                         emptyText: 'Sekolah Asal',
-                        allowBlank: false
+                        allowBlank: true
                     }, {
-                        name: 'siswa_nama_wali',
+                        name: 'siswa_wali_nama',
                         fieldLabel: 'Nama Wali Murid',
                         emptyText: 'Nama Wali Murid',
                         allowBlank: false
@@ -287,10 +294,10 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                             hideLabel: 'true'
                         },
                         items: [{
-                            name: 'siswa_pekerjaan',
+                            name: 'siswa_wali_pekerjaan',
                             fieldLabel: 'Pekerjaan Wali Murid',
                             emptyText: 'Pekerjaan Wali Murid',
-                            allowBlank: false
+                            allowBlank: true
                         }]
                     }]
                 }]
@@ -304,6 +311,7 @@ Ext.define('SDIT.view.MASTER.Siswa', {
                     enable_grid();
                 }
             }, {
+                itemId: 'btnreset',
                 text: 'Reset',
                 handler: function() {
                     this.up('form').getForm().reset();

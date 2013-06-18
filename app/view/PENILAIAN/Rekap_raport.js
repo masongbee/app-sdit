@@ -53,16 +53,10 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
             proxy: {
                 type: 'ajax',
                 api: {
-                    read    : base_url+'index.php/c_nilai/getAll',
-                    create	: base_url+'index.php/c_nilai/save',
-                    update	: base_url+'index.php/c_nilai/save',
-                    destroy	: base_url+'index.php/c_nilai/delete'
+                    read    : base_url+'index.php/c_rekapraport/getAll'
                 },
                 actionMethods: {
-                    read    : 'POST',
-                    create	: 'POST',
-                    update	: 'POST',
-                    destroy	: 'POST'
+                    read    : 'POST'
                 },
                 reader: {
                     type            : 'json',
@@ -70,12 +64,6 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
                     rootProperty    : 'data',
                     successProperty : 'success',
                     messageProperty : 'message'
-                },
-                writer: {
-                    type            : 'json',
-                    writeAllFields  : true,
-                    root            : 'data',
-                    encode          : true
                 },
                 listeners: {
                     exception: function(proxy, response, operation){
@@ -136,7 +124,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
             proxy: {
                 type: 'ajax',
                 api: {
-                    read    : base_url+'index.php/c_nilai/getAllMapel'
+                    read    : base_url+'index.php/c_rekapraport/getAllMapel'
                 },
                 actionMethods: {
                     read    : 'POST'
@@ -256,12 +244,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
             selectedIndex: -1,
             selModel: Ext.selection.Model(),
 			viewConfig: { forceFit:true },
-            columns: [
-                {
-                    text: 'nilai_id',
-                    dataIndex: 'nilai_id',
-                    hidden: true
-                }, {
+            columns: [{
 					text: 'NO',
 					xtype: 'rownumberer',
 					align: 'center',
@@ -419,11 +402,11 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 						xtype: 'fieldcontainer',
 						layout: 'hbox',
 						defaultType: 'button',
-						items: [kelas_filterField, {
+						items: [thn_pelajaran_filterField, {
 							xtype: 'splitter'
 						}, {
 							xtype: 'splitter'
-						}, thn_pelajaran_filterField, {
+						}, kelas_filterField, {
 							xtype: 'splitter'
 						}, {
 							xtype: 'splitter'
