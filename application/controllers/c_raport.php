@@ -11,7 +11,9 @@ class C_raport extends CI_Controller {
 		/*
 		 * Processing Data
 		 */
-		$result = $this->m_raport->getAllMapel();
+		$kelas  		=   ($this->input->post('kelas', TRUE) ? $this->input->post('kelas', TRUE) : '');
+		
+		$result = $this->m_raport->getAllMapel($kelas);
 		echo json_encode($result);
 	}
 	

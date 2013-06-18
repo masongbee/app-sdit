@@ -28,27 +28,26 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
         
 		/* STORE start */
         var store = Ext.create('Ext.data.Store', {
-            storeId:'kelasStore',
-            fields:['nilai_id',
-					'siswakelas_id',
+            storeId:'store',
+            fields:['siswakelas_id',
+					'siswa_id',
+					'siswa_nama',
 					'siswa_nisnama',
-					'mapel_id',
-					'nilai_uh1',
-					'nilai_uh2',
-					'nilai_uh3',
-					'nilai_uh_rt2',
-					'nilai_uts',
-					'nilai_t1',
-					'nilai_t2',
-					'nilai_t3',
-					'nilai_t_rt2',
-					'nilai_uas',
-					'nilai_total',
-					'nilai_created_date',
-					'nilai_created_by',
-					'nilai_updated_date',
-					'nilai_updated_by',
-					'nilai_revised'
+					'qh',
+					'aa',
+					'fiqh',
+					'sn',
+					'pkn',
+					'bhsindo',
+					'mtk',
+					'ipa',
+					'ips',
+					'sbk',
+					'penjasorkes',
+					'bhsarab',
+					'bhsinggr',
+					'bhsjawa',
+					'summary'
             ],
             proxy: {
                 type: 'ajax',
@@ -91,40 +90,6 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
                 type: 'ajax',
                 api: {
                     read    : base_url+'index.php/c_siswakelas/getAllKelas'
-                },
-                actionMethods: {
-                    read    : 'POST'
-                },
-                reader: {
-                    type            : 'json',
-                    root            : 'data',
-                    rootProperty    : 'data',
-                    successProperty : 'success',
-                    messageProperty : 'message'
-                },
-                listeners: {
-                    exception: function(proxy, response, operation){
-                        Ext.MessageBox.show({
-                            title: 'REMOTE EXCEPTION',
-                            msg: operation.getError(),
-                            icon: Ext.MessageBox.ERROR,
-                            buttons: Ext.Msg.OK
-                        });
-                    }
-                }
-            },
-            autoLoad: false
-        });
-		
-		var mapelStore = Ext.create('Ext.data.Store', {
-            storeId:'mapelStore',
-            fields:['mapel_id',
-					'mapel_nama'
-            ],
-            proxy: {
-                type: 'ajax',
-                api: {
-                    read    : base_url+'index.php/c_rekapraport/getAllMapel'
                 },
                 actionMethods: {
                     read    : 'POST'
@@ -200,42 +165,23 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 			lazyRender:true,
 			listClass: 'x-combo-list-small',
 			width: 360,
-			forceSelection:true
+			forceSelection:true,
+			listeners: {
+				change: function(me, newValue, oldValue){
+					store.load({
+						params: {
+							kelas: newValue,
+							thn_pelajaran: thn_pelajaran_filterField.getValue()
+						}
+					});
+				}
+			}
 		});
 		var thn_pelajaran_filterField = Ext.create('Ext.form.field.Text', {
 			fieldLabel: '<b>Tahun Pelajaran</b>',
 			labelWidth: 100,
 			width: 200,
 			allowBlank: false
-		});
-		var mapel_filterField = Ext.create('Ext.form.field.ComboBox', {
-			fieldLabel: '<b>Mata Pelajaran</b>',
-			labelWidth: 95,
-			store: mapelStore,
-			queryMode: 'local',
-			displayField:'mapel_nama',
-			valueField: 'mapel_id',
-	        typeAhead: false,
-	        loadingText: 'Searching...',
-	        hideTrigger:false,
-			allowBlank: false,
-	        itemSelector: 'div.search-item',
-			triggerAction: 'all',
-			lazyRender:true,
-			listClass: 'x-combo-list-small',
-			width: 360,
-			forceSelection:true,
-			listeners: {
-				change: function(me, newValue, oldValue){
-					store.load({
-						params: {
-							kelas: kelas_filterField.getValue(),
-							thn_pelajaran: thn_pelajaran_filterField.getValue(),
-							mapel: newValue
-						}
-					});
-				}
-			}
 		});
         var grid = Ext.create('Ext.grid.Panel', {
             title: 'Grid',
@@ -262,7 +208,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							text: 'Pendidikan Agama Islam',
 							columns: [{
 								text: 'QH',
-								dataIndex: 'nilai_uh1',
+								dataIndex: 'qh',
 								align: 'center',
 								width: 60,
 								renderer: function(value){
@@ -270,7 +216,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 								}
 							}, {
 								text: 'AA',
-								dataIndex: 'nilai_uh2',
+								dataIndex: 'aa',
 								align: 'center',
 								width: 60,
 								renderer: function(value){
@@ -278,7 +224,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 								}
 							}, {
 								text: 'Fiqh',
-								dataIndex: 'nilai_uh3',
+								dataIndex: 'fiqh',
 								align: 'center',
 								width: 60,
 								renderer: function(value){
@@ -286,7 +232,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 								}
 							}, {
 								text: 'SN',
-								dataIndex: 'nilai_uh3',
+								dataIndex: 'sn',
 								align: 'center',
 								width: 60,
 								renderer: function(value){
@@ -295,7 +241,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}]
 						}, {
 							text: 'PKn',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'pkn',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -303,7 +249,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}
 						}, {
 							text: 'Bhs.<br/>Indo',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'bhsindo',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -311,7 +257,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}
 						}, {
 							text: 'Mtk',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'mtk',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -319,7 +265,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}
 						}, {
 							text: 'IPA',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'ipa',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -327,7 +273,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}
 						}, {
 							text: 'IPS',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'ips',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -335,7 +281,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}
 						}, {
 							text: 'SBK',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'sbk',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -343,7 +289,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}
 						}, {
 							text: 'Penjas<br/>Orkes',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'penjasorkes',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -354,7 +300,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 						text: 'Muatan Lokal',
 						columns: [{
 							text: 'Bhs.<br/>Arab',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'bhsarab',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -362,7 +308,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}
 						}, {
 							text: 'Bhs.<br/>Inggr',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'bhsinggr',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -370,7 +316,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							}
 						}, {
 							text: 'Bhs.<br/>Jawa',
-							dataIndex: 'nilai_uh_rt2',
+							dataIndex: 'bhsjawa',
 							align: 'center',
 							width: 60,
 							renderer: function(value){
@@ -380,19 +326,145 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 					}]
 				}, {
 					text: '&sum;',
-					dataIndex: 'nilai_uh_rt2',
+					dataIndex: 'summary',
 					align: 'center',
 					width: 60,
-					renderer: function(value){
-						return Ext.util.Format.currency(value, '&nbsp;', 1);
+					renderer: function(value, metadata, record){
+						var data = record.data;
+						var qh = 0;
+						if (typeof data.qh !== 'undefined' && !!data.qh) {
+							qh = data.qh;
+						}
+						var aa = 0;
+						if (typeof data.aa !== 'undefined' && !!data.aa) {
+							aa = data.aa;
+						}
+						var fiqh = 0;
+						if (typeof data.fiqh !== 'undefined' && !!data.fiqh) {
+							fiqh = data.fiqh;
+						}
+						var sn = 0;
+						if (typeof data.sn !== 'undefined' && !!data.sn) {
+							sn = data.sn;
+						}
+						var pkn = 0;
+						if (typeof data.pkn !== 'undefined' && !!data.pkn) {
+							pkn = data.pkn;
+						}
+						var bhsindo = 0;
+						if (typeof data.bhsindo !== 'undefined' && !!data.bhsindo) {
+							bhsindo = data.bhsindo;
+						}
+						var mtk = 0;
+						if (typeof data.mtk !== 'undefined' && !!data.mtk) {
+							mtk = data.mtk;
+						}
+						var ipa = 0;
+						if (typeof data.ipa !== 'undefined' && !!data.ipa) {
+							ipa = data.ipa;
+						}
+						var ips = 0;
+						if (typeof data.ips !== 'undefined' && !!data.ips) {
+							ips = data.ips;
+						}
+						var sbk = 0;
+						if (typeof data.sbk !== 'undefined' && !!data.sbk) {
+							sbk = data.sbk;
+						}
+						var penjasorkes = 0;
+						if (typeof data.penjasorkes !== 'undefined' && !!data.penjasorkes) {
+							penjasorkes = data.penjasorkes;
+						}
+						var bhsarab = 0;
+						if (typeof data.bhsarab !== 'undefined' && !!data.bhsarab) {
+							bhsarab = data.bhsarab;
+						}
+						var bhsinggr = 0;
+						if (typeof data.bhsinggr !== 'undefined' && !!data.bhsinggr) {
+							bhsinggr = data.bhsinggr;
+						}
+						var bhsjawa = 0;
+						if (typeof data.bhsjawa !== 'undefined' && !!data.bhsjawa) {
+							bhsjawa = data.bhsjawa;
+						}
+						var summary = parseFloat(qh) + parseFloat(aa) + parseFloat(fiqh) + parseFloat(sn)
+									+ parseFloat(pkn) + parseFloat(bhsindo) + parseFloat(mtk) + parseFloat(ipa)
+									+ parseFloat(ips) + parseFloat(sbk) + parseFloat(penjasorkes)
+									+ parseFloat(bhsarab) + parseFloat(bhsinggr) + parseFloat(bhsjawa);
+						//console.log(summary);
+						return Ext.util.Format.currency(summary, '&nbsp;', 1);
+						//return Ext.util.Format.currency(value, '&nbsp;', 1);
 					}
 				}, {
 					text: 'Rata2',
 					dataIndex: 'nilai_uh_rt2',
 					align: 'center',
 					width: 80,
-					renderer: function(value){
-						return Ext.util.Format.currency(value, '&nbsp;', 1);
+					renderer: function(value, metadata, record, rowindex, colindex, store, view){
+						var data = record.data;
+						var qh = 0;
+						if (typeof data.qh !== 'undefined' && !!data.qh) {
+							qh = data.qh;
+						}
+						var aa = 0;
+						if (typeof data.aa !== 'undefined' && !!data.aa) {
+							aa = data.aa;
+						}
+						var fiqh = 0;
+						if (typeof data.fiqh !== 'undefined' && !!data.fiqh) {
+							fiqh = data.fiqh;
+						}
+						var sn = 0;
+						if (typeof data.sn !== 'undefined' && !!data.sn) {
+							sn = data.sn;
+						}
+						var pkn = 0;
+						if (typeof data.pkn !== 'undefined' && !!data.pkn) {
+							pkn = data.pkn;
+						}
+						var bhsindo = 0;
+						if (typeof data.bhsindo !== 'undefined' && !!data.bhsindo) {
+							bhsindo = data.bhsindo;
+						}
+						var mtk = 0;
+						if (typeof data.mtk !== 'undefined' && !!data.mtk) {
+							mtk = data.mtk;
+						}
+						var ipa = 0;
+						if (typeof data.ipa !== 'undefined' && !!data.ipa) {
+							ipa = data.ipa;
+						}
+						var ips = 0;
+						if (typeof data.ips !== 'undefined' && !!data.ips) {
+							ips = data.ips;
+						}
+						var sbk = 0;
+						if (typeof data.sbk !== 'undefined' && !!data.sbk) {
+							sbk = data.sbk;
+						}
+						var penjasorkes = 0;
+						if (typeof data.penjasorkes !== 'undefined' && !!data.penjasorkes) {
+							penjasorkes = data.penjasorkes;
+						}
+						var bhsarab = 0;
+						if (typeof data.bhsarab !== 'undefined' && !!data.bhsarab) {
+							bhsarab = data.bhsarab;
+						}
+						var bhsinggr = 0;
+						if (typeof data.bhsinggr !== 'undefined' && !!data.bhsinggr) {
+							bhsinggr = data.bhsinggr;
+						}
+						var bhsjawa = 0;
+						if (typeof data.bhsjawa !== 'undefined' && !!data.bhsjawa) {
+							bhsjawa = data.bhsjawa;
+						}
+						var rata2 = (parseFloat(qh) + parseFloat(aa) + parseFloat(fiqh) + parseFloat(sn)
+									+ parseFloat(pkn) + parseFloat(bhsindo) + parseFloat(mtk) + parseFloat(ipa)
+									+ parseFloat(ips) + parseFloat(sbk) + parseFloat(penjasorkes)
+									+ parseFloat(bhsarab) + parseFloat(bhsinggr) + parseFloat(bhsjawa)) / 14;
+						//console.log(summary);
+						return Ext.util.Format.currency(rata2, '&nbsp;', 1);
+						//return Ext.util.Format.currency(value, '&nbsp;', 1);
 					}
 				}
             ],
@@ -406,11 +478,7 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
 							xtype: 'splitter'
 						}, {
 							xtype: 'splitter'
-						}, kelas_filterField, {
-							xtype: 'splitter'
-						}, {
-							xtype: 'splitter'
-						}, mapel_filterField]
+						}, kelas_filterField]
 					}]
 				})/*,
                 {
@@ -424,7 +492,6 @@ Ext.define('SDIT.view.PENILAIAN.Rekap_raport', {
             listeners: {
 				afterrender: function(){
 					kelasStore.reload();
-					mapelStore.reload();
 					
 					var thn_pelajaran_sekarang = get_thn_pelajaran();
 					thn_pelajaran_filterField.setValue(thn_pelajaran_sekarang);

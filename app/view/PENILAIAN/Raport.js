@@ -212,7 +212,16 @@ Ext.define('SDIT.view.PENILAIAN.Raport', {
 			lazyRender:true,
 			listClass: 'x-combo-list-small',
 			width: 360,
-			forceSelection:true
+			forceSelection:true,
+			listeners: {
+				change: function(me, newValue, oldValue){
+					mapelStore.load({
+						params: {
+							kelas: newValue
+						}
+					});
+				}
+			}
 		});
 		var thn_pelajaran_filterField = Ext.create('Ext.form.field.Text', {
 			fieldLabel: '<b>Tahun Pelajaran</b>',
@@ -385,7 +394,6 @@ Ext.define('SDIT.view.PENILAIAN.Raport', {
             listeners: {
 				afterrender: function(){
 					kelasStore.reload();
-					mapelStore.reload();
 					
 					var thn_pelajaran_sekarang = get_thn_pelajaran();
 					thn_pelajaran_filterField.setValue(thn_pelajaran_sekarang);
