@@ -79,11 +79,6 @@ Ext.define('SDIT.view.Header', {
 							textAlign: 'left',
 							action: 'dtkelas'
 						},{
-							text: 'Mata Pelajaran dalam Kelas',
-							iconCls: 'icon-organisation',
-							textAlign: 'left',
-							action: 'dtmapelkelas'
-						},{
 							text: 'Siswa Kelas',
 							iconCls: 'icon-vcard',
 							textAlign: 'left',
@@ -93,6 +88,11 @@ Ext.define('SDIT.view.Header', {
 							iconCls: 'icon-book',
 							textAlign: 'left',
 							action: 'dtmapel'
+						},{
+							text: 'Mata Pelajaran dalam Kelas',
+							iconCls: 'icon-organisation',
+							textAlign: 'left',
+							action: 'dtmapelkelas'
 						}]
 					}]
 				}
