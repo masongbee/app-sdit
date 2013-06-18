@@ -54,7 +54,7 @@ class M_siswa extends CI_Model{
 		$last   = NULL;
 		$this->firephp->log($data->siswa_tgllahir);
 		$this->firephp->log(strtotime($data->siswa_tgllahir));
-		$this->firephp->log(strtotime('2013/07/18'));
+		$this->firephp->log(date('Y-m-d', strtotime('19 Jun, 2013')));
 		$pkey = array('siswa_id'=>$data->siswa_id);
 		$arrdata = array(
 			'siswa_nis'=>$data->siswa_nis,

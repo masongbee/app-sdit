@@ -11,9 +11,12 @@ class M_raport extends CI_Model{
 		parent::__construct();
 	}
 	
-	function getAllMapel(){
-		$query  = $this->db->get('mapel')->result();
-		$total  = $this->db->get('mapel')->num_rows();
+	function getAllMapel($kelas){
+		$sql = "SELECT mapel.mapel_id, mapel.mapel_nama
+			FROM mapel_kelas JOIN mapel ON(mapel.mapel_id = mapel_kelas.mapel_id)
+			WHERE mapel_kelas.kelas_id = ".$kelas;
+		$query  = $this->db->query($sql)->result();
+		$total  = $this->db->query($sql)->num_rows();
 		
 		$data   = array();
 		foreach($query as $result){
@@ -28,6 +31,14 @@ class M_raport extends CI_Model{
 		);
 		
 		return $json;
+	}
+	
+	function getMapelByKelas($thn_pelajaran, $kelas){
+		$sql = "SELECT mapel_id
+			FROM mapel_kelas
+			WHERE mapel_kelas.mapelkelas_thnpelajaran = '".$thn_pelajaran."'
+				AND mapel_kelas.kelas_id = ".$kelas;
+		return $this->db->query($sql)->result();
 	}
 	
 	/**
@@ -48,15 +59,21 @@ class M_raport extends CI_Model{
 				AND nilai_siswa.mapel_id = ".$mapel."
 			LIMIT 1";
 		if($this->db->query($sql)->num_rows() == 0){
+			//get mapel berdasarkan kelas
+			$mapel_kelas = $this->getMapelByKelas($thn_pelajaran, $kelas);
 			//generate data nilai siswa ke dalam db.nilai_siswa
 			$lock_tbl = "LOCK TABLE nilai_siswa WRITE, siswa_kelas WRITE";
 			$this->db->query($lock_tbl);
-			$sql_pre_data = "INSERT INTO nilai_siswa (nilai_siswa.siswakelas_id, nilai_siswa.mapel_id)
-				SELECT siswa_kelas.siswakelas_id, ".$mapel." AS mapel_id
-				FROM siswa_kelas
-				WHERE siswa_kelas.kelas_id = ".$kelas."
-					AND siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."'";
-			$this->db->query($sql_pre_data);
+			if(sizeof($mapel_kelas) > 0){
+				foreach($mapel_kelas as $row){
+					$sql_pre_data = "INSERT INTO nilai_siswa (nilai_siswa.siswakelas_id, nilai_siswa.mapel_id)
+						SELECT siswa_kelas.siswakelas_id, ".$row->mapel_id." AS mapel_id
+						FROM siswa_kelas
+						WHERE siswa_kelas.kelas_id = ".$kelas."
+							AND siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."'";
+					$this->db->query($sql_pre_data);
+				}
+			}
 			$unlock_tbl = "UNLOCK TABLES";
 			$this->db->query($unlock_tbl);
 		}

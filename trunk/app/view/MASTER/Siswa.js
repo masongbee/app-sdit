@@ -10,7 +10,7 @@ Ext.define('SDIT.view.MASTER.Siswa', {
         var store = Ext.create('Ext.data.Store', {
             storeId:'siswaStore',
             fields:['siswa_id','siswa_nis','siswa_nama','siswa_tmptlahir',
-                    {name: 'siswa_tgllahir', type: 'date', dateFormat: 'Y-d-m', mapping: 'siswa_tgllahir'},
+                    {name: 'siswa_tgllahir', type: 'date', dateFormat: 'Y-m-d', mapping: 'siswa_tgllahir'},
                     'siswa_alamat','siswa_telp','siswa_hp','siswa_sekolah_asal','siswa_wali_nama','siswa_wali_pekerjaan'],
             proxy: {
                 type: 'ajax',

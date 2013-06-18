@@ -40,34 +40,58 @@ class M_rekapraport extends CI_Model{
 	 * @return json
 	 */
 	function getAll($kelas, $thn_pelajaran){
-		$sql = "SELECT nilai_id
-			FROM nilai_siswa JOIN siswa_kelas ON(siswa_kelas.siswakelas_id = nilai_siswa.siswakelas_id)
-			WHERE siswa_kelas.kelas_id = ".$kelas."
-				AND siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."'
-				AND nilai_siswa.mapel_id = ".$mapel."
-			LIMIT 1";
-		if($this->db->query($sql)->num_rows() == 0){
-			//generate data nilai siswa ke dalam db.nilai_siswa
-			$lock_tbl = "LOCK TABLE nilai_siswa WRITE, siswa_kelas WRITE";
-			$this->db->query($lock_tbl);
-			$sql_pre_data = "INSERT INTO nilai_siswa (nilai_siswa.siswakelas_id, nilai_siswa.mapel_id)
-				SELECT siswa_kelas.siswakelas_id, ".$mapel." AS mapel_id
-				FROM siswa_kelas
-				WHERE siswa_kelas.kelas_id = ".$kelas."
-					AND siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."'";
-			$this->db->query($sql_pre_data);
-			$unlock_tbl = "UNLOCK TABLES";
-			$this->db->query($unlock_tbl);
-		}
+		$sql = "SET @sql = NULL";
+		$this->db->query($sql);
 		
-		$sql = "SELECT nilai_siswa.*, siswa.siswa_nama, siswa.siswa_nis, CONCAT('[', siswa.siswa_nis, '] - ', siswa.siswa_nama) AS siswa_nisnama
-			FROM nilai_siswa JOIN siswa_kelas ON(siswa_kelas.siswakelas_id = nilai_siswa.siswakelas_id)
-			LEFT JOIN siswa ON(siswa.siswa_id = siswa_kelas.siswa_id)
-			WHERE siswa_kelas.kelas_id = ".$kelas."
-				AND siswa_kelas.siswakelas_thnpelajaran = '".$thn_pelajaran."'
-				AND nilai_siswa.mapel_id = ".$mapel;
-		$query  = $this->db->query($sql)->result();
-		$total  = $this->db->query($sql)->num_rows();
+		$sql = "SELECT
+				GROUP_CONCAT(DISTINCT
+				  CONCAT(
+					'MAX(IF(nilai_siswa.mapel_id = ''',
+					mapel.mapel_id,
+					''', nilai_siswa.nilai_total, NULL)) AS ',
+					LCASE(REPLACE(REPLACE(mapel.mapel_nama,' ',''),'.',''))
+				  )
+				) INTO @sql
+			FROM nilai_siswa 
+			LEFT JOIN mapel ON mapel.mapel_id = nilai_siswa.mapel_id";
+		$this->db->query($sql);
+		
+		/*$sql = "SET @sql = CONCAT('SELECT vu_all.*,
+				((IFNULL(vu_all.qh,0) + IFNULL(vu_all.aa,0) + IFNULL(vu_all.fiqh,0) + IFNULL(vu_all.sn,0)
+				+ IFNULL(vu_all.pkn,0) + IFNULL(vu_all.bhsindo,0) + IFNULL(vu_all.mtk,0)
+				+ IFNULL(vu_all.ipa,0) + IFNULL(vu_all.ips,0) + IFNULL(vu_all.sbk,0)
+				+ IFNULL(vu_all.penjasorkes,0) + IFNULL(vu_all.bhsarab,0) + IFNULL(vu_all.bhsinggr,0)
+				+IFNULL(vu_all.bhsjawa,0) )/14) AS summary
+			FROM
+				(SELECT nilai_siswa.siswakelas_id, siswa.siswa_nis, siswa.siswa_nama,
+				CONCAT(\"[\", siswa.siswa_nis, \"] - \", siswa.siswa_nama) AS siswa_nisnama, ', @sql, ' 
+				FROM nilai_siswa JOIN siswa_kelas ON siswa_kelas.siswakelas_id = nilai_siswa.siswakelas_id
+				JOIN siswa ON siswa.siswa_id = siswa_kelas.siswa_id
+				WHERE siswa_kelas.siswakelas_thnpelajaran = \"".$thn_pelajaran."\" AND siswa_kelas.kelas_id = ".$kelas."
+				GROUP BY nilai_siswa.siswakelas_id) AS vu_all')";*/
+		$sql = "SET @sql = CONCAT('SELECT vu_all.*
+			FROM
+				(SELECT nilai_siswa.siswakelas_id, siswa.siswa_nis, siswa.siswa_nama,
+				CONCAT(\"[\", siswa.siswa_nis, \"] - \", siswa.siswa_nama) AS siswa_nisnama, ', @sql, ' 
+				FROM nilai_siswa JOIN siswa_kelas ON siswa_kelas.siswakelas_id = nilai_siswa.siswakelas_id
+				JOIN siswa ON siswa.siswa_id = siswa_kelas.siswa_id
+				WHERE siswa_kelas.siswakelas_thnpelajaran = \"".$thn_pelajaran."\" AND siswa_kelas.kelas_id = ".$kelas."
+				GROUP BY nilai_siswa.siswakelas_id) AS vu_all')";
+		$this->db->query($sql);
+		
+		$sql = "PREPARE stmt FROM @sql";
+		$this->db->query($sql);
+		
+		$sql_main = "EXECUTE stmt";
+		$query_main = $this->db->query($sql_main);
+		
+		$sql = "DEALLOCATE PREPARE stmt";
+		$this->db->query($sql);
+		
+		
+		
+		$query  = $query_main->result();
+		$total  = $query_main->num_rows();
 		
 		$data   = array();
 		foreach($query as $result){
