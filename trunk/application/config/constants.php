@@ -36,6 +36,12 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
+define('session_userid','sdit_userid');
+define('session_guruid','sdit_guruid');
+define('session_gurunama','sdit_gurunama');
+define('LONG_FORMATDATE','Y-m-d H:i:s');
+define('SHORT_FORMATDATE','Y-m-d');
+
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

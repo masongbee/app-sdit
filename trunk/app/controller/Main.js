@@ -24,6 +24,9 @@ Ext.define('SDIT.controller.Main', {
             'appHeader button[action=user]': {
                 click: this.user_click
             },
+            'appHeader button[action=logout]': {
+                click: this.logout_click
+            },
             'appHeader button[action=dtguru]': {
                 click: this.dtguru_click
             },
@@ -61,6 +64,18 @@ Ext.define('SDIT.controller.Main', {
     user_click: function(){
         console.log('user click');
         this.setActivePage('SDIT.view.FILE.User', 'User');
+    },
+    
+    logout_click: function(){
+        console.log('logout click');
+        Ext.Ajax.request({
+            method: 'POST',
+            url: base_url+'index.php?c=c_login&m=logout',
+            success: function(response){
+                var redirect = 'index.php?c=c_login';
+				window.location = redirect;
+            }
+        });
     },
     
     dtguru_click: function(){

@@ -30,10 +30,10 @@ Ext.define('SDIT.view.Header', {
 							xtype: 'button',
 							scale: 'small',
 							iconAlign: 'left',
-							width: 175
+							width: 120
 						},
 						items: [{
-							text: 'User Manager',
+							text: 'User',
 							iconCls: 'icon-group-key',
 							displayText: 'User manager',
 							textAlign: 'left',
